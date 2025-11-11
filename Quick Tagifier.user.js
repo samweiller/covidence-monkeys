@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Quick Tag
-// @namespace    http://tampermonkey.net/
-// @version      1.0
+// @name         Quick Tagifier
+// @namespace    com.canlab.covidence
+// @version      1.1
 // @description  Automatically select study, open tag dialog, select tag, and apply
 // @author       You
 // @match        *://*.covidence.org/*
@@ -16,7 +16,7 @@
   const TAGS = [
     "Intro Fodder",
     "Of Interest",
-      "Protocol Paper",
+    "Protocol Paper",
     "Review",
     "Researcher-Focused",
     "Survey Study",
@@ -124,7 +124,7 @@
       applyButton.click();
       console.log("Apply button clicked - tagging complete!");
 
-              // Special case: If tagging as "Review", also click the "No" button
+      // Special case: If tagging as "Review", also click the "No" button
       if (tagName === "Review") {
         await sleep(500); // Wait for tag dialog to close
 
@@ -136,7 +136,6 @@
           console.error('Could not find "No" button');
         }
       }
-
     } catch (error) {
       console.error("Error in autoTagStudy:", error);
     }

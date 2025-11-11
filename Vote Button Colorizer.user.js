@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Covidence Vote Button Colorizer
-// @namespace    samw.tools
-// @version      1.0
+// @name         Vote Button Colorizer
+// @namespace    com.canlab.covidence
+// @version      1.1
 // @description  Color-code Yes/No/Maybe vote buttons on Covidence for quick visual distinction
 // @match        *://*.covidence.org/*
 // @match        *://covidence.org/*
@@ -10,10 +10,10 @@
 // ==/UserScript==
 
 (function () {
-  'use strict';
+  "use strict";
 
   // CSS injected directly so site style changes won't override it
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
     button.vote-option.primary[value="Yes"] {
       background-color: #4CAF50 !important;  /* green */
@@ -43,26 +43,29 @@
 
   // Handle dynamically added buttons
   const colorize = (root = document) => {
-    root.querySelectorAll('button.vote-option.primary').forEach(btn => {
+    root.querySelectorAll("button.vote-option.primary").forEach((btn) => {
       const val = btn.value?.trim().toLowerCase();
-      if (['yes', 'no', 'maybe'].includes(val)) {
+      if (["yes", "no", "maybe"].includes(val)) {
         // force re-application of style
-        btn.style.transition = 'background-color 0.2s';
+        btn.style.transition = "background-color 0.2s";
       }
     });
   };
 
   colorize();
 
-  const observer = new MutationObserver(muts => {
+  const observer = new MutationObserver((muts) => {
     for (const m of muts) {
       for (const node of m.addedNodes) {
         if (!(node instanceof Element)) continue;
-        if (node.matches?.('button.vote-option.primary')) colorize(node);
-        node.querySelectorAll?.('button.vote-option.primary').forEach(colorize);
+        if (node.matches?.("button.vote-option.primary")) colorize(node);
+        node.querySelectorAll?.("button.vote-option.primary").forEach(colorize);
       }
     }
   });
 
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+  });
 })();
